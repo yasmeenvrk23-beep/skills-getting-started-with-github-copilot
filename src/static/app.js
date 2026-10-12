@@ -57,4 +57,3 @@ async function unregisterParticipant(activityName, email) {
 }
 
 // step3-check
-            
