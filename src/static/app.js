@@ -1,13 +1,60 @@
-@app.delete("/activities/{activity_name}/signup")
-def unregister_from_activity(activity_name: str, email: str):
-    """Remove a student from an activity"""
-    if activity_name not in activities:
-        raise HTTPException(status_code=404, detail="Activity not found")
+document.addEventListener("DOMContentLoaded", () => {
+    loadActivities();
+});
 
-    activity = activities[activity_name]
-    if email in activity["participants"]:
-        activity["participants"].remove(email)
-        return {"message": f"Removed {email} from {activity_name}"}
-
-    raise HTTPException(status_code=404, detail="Student not found in participants")
+async function loadActivities() {
+    try {
+        const response = await fetch("/activities");
+        const activities = await response.json();
         
+        const container = document.getElementById("activities-container");
+        if (!container) return;
+        
+        container.innerHTML = "";
+        
+        for (const [name, details] of Object.entries(activities)) {
+            const card = document.createElement("div");
+            card.className = "activity-card";
+            
+            let participantsHtml = '<ul class="participants-list">';
+            details.participants.forEach(email => {
+                participantsHtml += `
+                    <li>
+                        <span>${email}</span>
+                        <button class="delete-btn" onclick="unregisterParticipant('${name}', '${email}')">❌</button>
+                    </li>`;
+            });
+            participantsHtml += '</ul>';
+            
+            card.innerHTML = `
+                <h3>${name}</h3>
+                <p>${details.description}</p>
+                <p><strong>Schedule:</strong> ${details.schedule}</p>
+                <p><strong>Participants (${details.participants.length}/${details.max_participants}):</strong></p>
+                ${participantsHtml}
+            `;
+            container.appendChild(card);
+        }
+    } catch (error) {
+        console.error("Error loading activities:", error);
+    }
+}
+
+async function unregisterParticipant(activityName, email) {
+    try {
+        const response = await fetch(`/activities/${encodeURIComponent(activityName)}/signup?email=${encodeURIComponent(email)}`, {
+            method: "DELETE"
+        });
+        
+        if (response.ok) {
+            loadActivities();
+        } else {
+            alert("Failed to unregister participant.");
+        }
+    } catch (error) {
+        console.error("Error unregistering:", error);
+    }
+}
+
+// step3-check
+            
