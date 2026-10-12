@@ -56,4 +56,4 @@ async function unregisterParticipant(activityName, email) {
     }
 }
 // trigger check
-             
+  /* style update */           
