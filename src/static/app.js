@@ -55,3 +55,4 @@ async function unregisterParticipant(activityName, email) {
         console.error("Error unregistering:", error);
     }
 }
+
