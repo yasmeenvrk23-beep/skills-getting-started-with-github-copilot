@@ -55,5 +55,3 @@ async function unregisterParticipant(activityName, email) {
         console.error("Error unregistering:", error);
     }
 }
-
-// step3-check
