@@ -16,13 +16,13 @@ async function loadActivities() {
             const card = document.createElement("div");
             card.className = "activity-card";
             
-            let participantsHtml = '<ul style="list-style-type: none; padding-left: 0;">';
+            let participantsHtml = '<ul class="participants-list">';
             details.participants.forEach(email => {
                 participantsHtml += `
-                    <li style="display: flex; justify-content: space-between; align-items: center; margin-bottom: 4px;">
+                    <li>
                         <span>${email}</span>
-                        <button onclick="unregisterParticipant('${name}', '${email}')" style="background: transparent; border: none; cursor: pointer; color: red;">❌</button>
-                    `;
+                        <button class="delete-btn" onclick="unregisterParticipant('${name}', '${email}')">❌</button>
+                    </li>`;
             });
             participantsHtml += '</ul>';
             
@@ -55,4 +55,5 @@ async function unregisterParticipant(activityName, email) {
         console.error("Error unregistering:", error);
     }
 }
-
+// trigger check
+             
